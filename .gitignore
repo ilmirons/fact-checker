@@ -1,5 +1,3 @@
 node_modules/
 *.orig
 *.bak
-stuff/
-tests/
