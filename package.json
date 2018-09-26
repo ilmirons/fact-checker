@@ -1,0 +1,36 @@
+{
+  "name": "fact-checker",
+  "version": "1.0.0",
+  "description": "A down to earth API test tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin" : { 
+    "fact-checker" : "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/ilmirons/fact-checker.git"
+  },
+  "keywords": [
+    "test",
+    "API"
+  ],
+  "author": "andreamirone@gmail.com",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/ilmirons/fact-checker#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "json5": "^2.0.1",
+    "lodash": "^4.17.11"
+  },
+  "peerDependencies": {
+    "chai": "4.x",
+    "jsonpath": "^1.0.0",
+    "lodash": "^4.17.11",
+    "mocha": "5.x",
+    "read-json-sync": "^2.0.0",
+    "request": "2.x"
+  }
+}
