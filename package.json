@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/ilmirons/fact-checker.git"
+    "url": "https://github.com/ilmirons/fact-checker.git"
   },
   "keywords": [
     "test",
@@ -19,7 +19,7 @@
   ],
   "author": "andreamirone@gmail.com",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/ilmirons/fact-checker#readme",
+  "homepage": "https://github.com/ilmirons/fact-checker",
   "dependencies": {
     "ejs": "^2.6.1",
     "json5": "^2.0.1",

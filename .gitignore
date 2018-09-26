@@ -1,3 +1,5 @@
+*.bak
 node_modules/
 *.orig
-*.bak
+stuff/
+fact-checker.sublime-workspace

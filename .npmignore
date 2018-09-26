@@ -1,2 +1,6 @@
 .git/
+.gitignore
 stuff/
+*.tgz
+fact-checker.sublime-workspace
+fact-checker.sublime-project
