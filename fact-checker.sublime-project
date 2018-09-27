@@ -1,0 +1,16 @@
+{
+  "folders": [{
+    "path": ".",
+    "folder_exclude_patterns": ["stuff", "node_modules"],
+    "follow_symlinks": true
+  }],
+  "settings": {
+    "tab_size": 2,
+    "SublimeLinter.linters.jshint.disable": true,
+    "SublimeLinter.linters.eslint.disable": false
+  },
+  "build_systems": [{
+    "name": "package",
+    "shell_cmd": "npm pack"
+  }]
+}
