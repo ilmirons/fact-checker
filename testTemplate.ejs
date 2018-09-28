@@ -8,15 +8,18 @@ var request = require('request')
     var testGroup = testGroups[k]; %>
 describe('<%- k %>', () => {
   <% for(var j = 0; j < testGroup.length; j++) { 
-	var t = testGroup[j];%>
+  var t = testGroup[j];%>
   it('<%- t.testTitle %>', (done) => {
     request(_.merge({
       body: readJSON(`<%- t.filePath %>`),
       json: true
     }, <%- JSON.stringify(t.requestOptions) %>), (err, res, data) => {
       if (err) throw err;
+      if (res.statusCode > 399) {
+        throw new Error(`Unexpected HTTP code ({res.statusCode}); payload reports: '{res.body}'`)
+      }
       <% for(var i = 0; i < t.checks.length; i++) { 
-				var check = t.checks[i] %>
+        var check = t.checks[i] %>
       expect(jp.value(data, '<%- check[0] %>')).to.deep.equal(<%- JSON.stringify(check[1]) %>)
       <% } %>
       done();
