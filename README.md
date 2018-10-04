@@ -17,7 +17,7 @@ Fact-checker is a test generator; it generates JSON input files to be sent to se
 ### How does it works
 TL;DR; see working example [here](https://github.com/ilmirons/echoServer) (download dependencies and run `npm test`)
 
-A template is defined in `test/default.json`. It includes a `requestOption` field which contains options to be passed to [request]() when sending data to server and a `body` field which contains a shallow payload with defaults. From these defaults and a conf file located in `test/tests.json`  the testSuite is generated. `test/tests.json` is an array of test definitions; each test definition includes a title (string containing at least one '_': the preceeding part is used to populate describe), a requestOptions object to be merged with defaults, an `inputs` array setting variables in the default tree and a `checks` array of pairs jsonpath expression/expected result (note: just the first result wil be used for a deep equality comparison with expected result)
+A template is defined in `test/default.json`. It includes a `requestOption` field which contains options to be passed to [request]() when sending data to server and a `body` field which contains a shallow payload with defaults. From these defaults and a conf file located in `test/tests.json`  the testSuite is generated. `test/tests.json` is an array of test definitions; each test definition includes a title (string containing at least one '_': the preceeding part is used to populate describe), a requestOptions object to be merged with defaults, an `inputs` array setting variables in the default tree and a `checks` array of pairs jsonpath expression/expected result (note: just the first result wil be used for a deep equality comparison with expected result). Both `test/default.json` and `test/tests.json` can use [json5](https://json5.org/) extensions (such as comments). As a clean is performed before generation of new files commenting test definition works as a way to avoid test/output files generation.
 
 ### Usage
 
@@ -25,5 +25,4 @@ Just run `$ fact-checker` with files in place.
 
 ### TODO
 * better error handling
-* support json5 for json inputs
 * support commandLine options
