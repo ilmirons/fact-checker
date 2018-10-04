@@ -1,11 +1,13 @@
 module.exports = {
   "env": {
-    "node": true
+    "node": true,
+    "es6": true
   },
   "parserOptions": {
-    "ecmaVersion": 6
+    "ecmaVersion": 2017
   },
-  "extends": "eslint:recommended",
+  "plugins": ["promise"],
+  "extends": ["eslint:recommended", "plugin:promise/recommended"],
   "globals": {
     "chai": false,
     "mocha": false
