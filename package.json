@@ -24,6 +24,7 @@
     "ejs": "^2.6.1",
     "json5": "^2.0.1",
     "lodash": "^4.17.11",
+    "pify": "^4.0.0",
     "recursive-readdir": "^2.2.2"
   },
   "peerDependencies": {

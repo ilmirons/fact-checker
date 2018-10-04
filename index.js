@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
-const fs       = require('fs')
-const rReadDir = require('recursive-readdir')
-const ejs      = require('ejs')
 const _        = require('lodash')
-const path     = require('path')
-const mkdirp   = require('mkdirp')
+const ejs      = require('ejs')
+const fs       = require('fs')
 const JSON5    = require('json5')
+const mkdirp   = require('mkdirp')
+const path     = require('path')
+// TODO convert everything to promises
+const pify     = require('pify')
+const rReadDir = require('recursive-readdir')
 
 // TODO add cmdLine support for path
 
@@ -18,15 +20,12 @@ const mkInputPath = (name) => path.join(testRoot, '/testInputs/', name + '.gen.j
 
 mkdirp(path.join(testRoot, '/testInputs/'))
 
+const unlinkPromise = pify(fs.unlink)
 const clean = () => rReadDir(testRoot)
-  .then((files) => 
-    Promise.all(files
+  .then((files) => Promise.all(files
       .filter((f) => /.*\.gen\.\w+/.test(f))
-      .map((f) => new Promise((resolve, reject) => fs.unlink(f,
-        (err) => {
-          if (err) reject(err)
-          else resolve();
-        }))))
+      .map((f) => unlinkPromise(f))
+    )
   )
 
 
@@ -48,14 +47,12 @@ var generateSuite = (tests) => {
     testGroups: _.mapValues(testGroups, (tests) =>
       tests.map((t) => {
         if (_.isEmpty(t.title)) throw new Error('Titles for tests can not be empty');
-        const splitTitle = t.title.split('_');
-        t.testTitle = splitTitle.slice(splitTitle.length > 1 ? 1 :
-          0).join('_')
         if ([t.requestOptions, defaults.requestOptions].every(_.isEmpty)) {
           throw new Error('At least one among test or default requestOptions must be defined')
         }
-        t.requestOptions = _.isObject(t.requestOptions) ?
-          _.merge(defaults.requestOptions, t.requestOptions) : defaults.requestOptions
+        const splitTitle = t.title.split('_');
+        t.testTitle = splitTitle.slice(splitTitle.length > 1 ? 1 : 0).join('_')
+        t.requestOptions = _.merge(defaults.requestOptions, t.requestOptions)
         t.filePath = mkInputPath(t.title)
         return t;
       })
@@ -76,4 +73,4 @@ clean()
     generateSuite(tests)
     return true;
   })
-  .catch((err) => console.err(err));
+  .catch((err) => console.error(err.message));
