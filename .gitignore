@@ -1,5 +1,6 @@
 *.bak
 node_modules/
 *.orig
+*.tgz
 stuff/
 fact-checker.sublime-workspace
