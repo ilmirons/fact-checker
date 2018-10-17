@@ -16,7 +16,7 @@ describe('<%- k %>', () => {
     }, <%- JSON.stringify(t.requestOptions) %>), (err, res, data) => {
       if (err) throw err;
       if (res.statusCode > 399) {
-        throw new Error(`Unexpected HTTP code ({res.statusCode}); payload reports: '{res.body}'`)
+        throw new Error(`Unexpected HTTP code (${res.statusCode}); payload reports: '${res.body}'`)
       }
       <% for(var i = 0; i < t.checks.length; i++) { 
         var check = t.checks[i] %>
