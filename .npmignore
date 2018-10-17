@@ -1,6 +1,9 @@
+*.tgz
+.editorconfig
+.eslintrc
 .git/
 .gitignore
-stuff/
-*.tgz
-fact-checker.sublime-workspace
+.jsbeautifyrc
 fact-checker.sublime-project
+fact-checker.sublime-workspace
+stuff/
