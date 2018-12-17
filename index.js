@@ -34,7 +34,7 @@ const generateTestInput = (t) => {
   const inputFile = mkInputPath(t.title)
     // TODO find a safer alternative to this eval call
   t.inputs.forEach((i) => eval(i))
-  fs.writeFile(inputFile, JSON5.stringify(req), (err) => {
+  fs.writeFile(inputFile, JSON.stringify(req), (err) => {
     if (err) throw err
       // TODO add cmdLine support for verbose
     else console.info(inputFile, 'has been generated!')
