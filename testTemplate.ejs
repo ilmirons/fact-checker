@@ -3,6 +3,7 @@ var readJSON = require('read-json-sync')
 var jp = require('jsonpath')
 var expect = require('chai').expect
 var request = require('request')
+const { writeFile } = require('fs')
 
 <% Object.keys(testGroups).forEach((k) => {
     var testGroup = testGroups[k]; %>
@@ -15,6 +16,11 @@ describe('<%- k %>', () => {
       json: true
     }, <%- JSON.stringify(t.requestOptions) %>), (err, res, data) => {
       if (err) throw err;
+      <% if (t.saveRes) { %>
+      writeFile(`<%- t.outPath %>`, JSON.stringify(res.body), function (err) {
+        console.err(err)
+      }) 
+      <% } %>
       if (res.statusCode > 399) {
         throw new Error(`Unexpected HTTP code (${res.statusCode}); payload reports: '${JSON.stringify(res.body)}'`)
       }
