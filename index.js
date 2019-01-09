@@ -9,6 +9,7 @@ const path     = require('path')
 const pify     = require('pify')
 const rReadDir = require('recursive-readdir')
 const program  = require('commander')
+const mm       = require('minimatch')
 
 program
   .version(require(path.join(__dirname, 'package.json')).version)
@@ -16,17 +17,25 @@ program
   .option('-r, --root <path>', 'Test root folder')
   .option('-d, --defaults', 'Template with default values for messages to be sent')
   .option('-s, --save', 'Save responses from the server')
-  .option('-t, --tests', 'Input file for test definition')
+  .option('-t, --tests', 'Glob file pattern for test definition. Matches inside test root folder')
   .parse(process.argv)
 
 const isJson = true // program.format && program.format.toLowerCase() === 'json' || true
 
-const fileExt     = isJson ? 'json' : 'xml'
-const testRoot    = program.root || './tests'
-const defaultFile = program.defaults || path.join(testRoot, `default.${fileExt}`)
-const defaults    = JSON5.parse(fs.readFileSync(defaultFile))
-const testFile    = program.tests || path.join(testRoot, 'tests.json')
-const tests       = JSON5.parse(fs.readFileSync(testFile))
+const fileExt      = isJson ? 'json' : 'xml'
+const testRoot     = program.root || './tests'
+const defaultFile  = program.defaults || path.join(testRoot, `default.${fileExt}`)
+const defaults     = JSON5.parse(fs.readFileSync(defaultFile))
+const testFileGlob = program.tests || '*tests.json'
+async function getTestDefinitions(fileGlob) {
+  const files = await rReadDir(testRoot).catch((err) => console.log(err))
+  return _.flatMap(files.filter(mm.filter(fileGlob, { matchBase: true, nocase: true })),
+    (file) => { 
+      let ts = JSON5.parse(fs.readFileSync(file)); 
+      return ts.map(t => { t.srcFile = path.basename(file); return t } ) 
+    })
+}
+
 
 const mkInputPath = (name) => path.join(testRoot, '/testInputs/', `${name}.gen.${fileExt}`).replace(/\\/g, '\\\\')
 const mkOutputPath = (name) => path.join(testRoot, '/testOutputs/', `${name}.${fileExt}`).replace(/\\/g, '\\\\')
@@ -82,7 +91,9 @@ var generateSuite = (tests) => {
 }
 
 clean()
-  .then(() => {
+  .then(() => getTestDefinitions(testFileGlob))
+  .then((tests) => {
+    console.log(tests)
     tests.forEach(generateTestInput)
     generateSuite(tests)
     return true;
