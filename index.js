@@ -36,7 +36,6 @@ async function getTestDefinitions(fileGlob) {
     })
 }
 
-
 const mkInputPath = (name) => path.join(testRoot, '/testInputs/', `${name}.gen.${fileExt}`).replace(/\\/g, '\\\\')
 const mkOutputPath = (name) => path.join(testRoot, '/testOutputs/', `${name}.${fileExt}`).replace(/\\/g, '\\\\')
 
@@ -86,7 +85,7 @@ var generateSuites = (tests) => {
       if (err) throw err;
       fs.writeFile(path.join(testRoot, `/${fileName}Suite.gen.js`), str, (err) => {
         if (err) throw err;
-        else if (program.verbose) { console.info('testSuite has been generated!') }
+        else if (program.verbose) { console.info(`${fileName}Suite has been generated!`) }
       })
     });
   })
