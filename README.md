@@ -18,17 +18,31 @@ $ npm test # after configuring test for your server or starting included echo-se
 ```
 the wrapper includes an echo server (re-send everything sent to it) that can be used for experimenting. After installing try (on bash shell):
 ```bash
-$ node ./fact-checker-wrapper/index.js %
+$ mini-echo &
 $ npm test
+```
+
+`npm test` execute `fact-checker` and `mocha` on generated tests. You can execute manually both commands, fact-checker supports the following options:
+
+```bash
+  -V, --version      output the version number
+  -v, --verbose      Print more output
+  -r, --root <path>  Test root folder
+  -d, --defaults     Template with default values for messages to be sent
+  -s, --save         Save responses from the server
+  -t, --tests        Glob file pattern for test definition. Matches inside test root folder
+  -h, --help         output usage information
 ```
 
 ### How does it works
 
-A template is defined in `test/default.json`. It includes a `requestOption` field which contains options to be passed to [request](https://github.com/request/request) when sending data to server and a `body` field which contains a shallow payload with defaults. From these defaults and a conf file located in `test/tests.json`  the testSuite is generated. `test/tests.json` is an array of test definitions; each test definition includes a title (string containing at least one '_': the preceeding part is used to populate describe), a requestOptions object to be merged with defaults, an `inputs` array setting variables in the default tree and a `checks` array of pairs jsonpath expression/expected result (note: just the first result wil be used for a deep equality comparison with expected result). Both `test/default.json` and `test/tests.json` can use [json5](https://json5.org/) extensions (such as comments). As a clean is performed before generation of new files commenting test definition works as a way to avoid test/output files generation.
+A template is defined in `test/default.json`. It includes a `requestOption` field which contains options to be passed to [request](https://github.com/request/request) when sending data to server and a `body` field which contains a shallow payload with defaults. From these defaults and a series of conf files located in  test root folder (default `test`) the testSuites are generated. Test definition files match the pattern `/.*tests.json/i`. For each of these a corresponding `.*testsSuite.js` file is generated. Test definition files are array of test definitions; each test definition includes a title (string containing at least one `_`: the preceeding part is used to group tests), a requestOptions object to be merged with defaults, an `inputs` array setting variables in the default tree and a `checks` array of pairs jsonpath expression/expected result (note: just the first result wil be used for a deep equality comparison with expected result). Both `test/default.json` and test definition files can use [json5](https://json5.org/) extensions (such as comments). As a clean is performed before generation of new files commenting test definitions works as a way to avoid test/output files generation.
+
+### Known issues
+
+mocha is not visible in executable path in windows, unless you install it globally. To run it from from the wrapper you may use the full path (`node_modules\.bin\mocha.cmd`)
 
 ### TODO
 
-* post-install-script to reduce commands needed for setup
-* support commandLine options
 * add XML/SOAP support too
 
